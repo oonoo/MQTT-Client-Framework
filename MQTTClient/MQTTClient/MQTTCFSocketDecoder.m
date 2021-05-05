@@ -35,8 +35,16 @@
 }
 
 - (void)close {
-    [self.stream close];
     [self.stream setDelegate:nil];
+    
+    // This is from Apple example code:
+    // https://developer.apple.com/library/archive/samplecode/sc1236/Listings/TLSTool_TLSToolCommon_m.html
+    if (self.stream != NULL) {
+        CFReadStreamSetDispatchQueue( (CFReadStreamRef) self.stream, NULL);
+    }
+    
+    [self.stream close];
+    self.stream = nil;
 }
 
 - (void)stream:(NSStream *)sender handleEvent:(NSStreamEvent)eventCode {
