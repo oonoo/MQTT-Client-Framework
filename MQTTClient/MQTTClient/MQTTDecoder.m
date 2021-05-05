@@ -194,6 +194,13 @@
         
         if (self.streams) {
             [stream setDelegate:nil];
+
+            // This is from Apple example code:
+            // https://developer.apple.com/library/archive/samplecode/sc1236/Listings/TLSTool_TLSToolCommon_m.html
+            if (stream != NULL) {
+                CFReadStreamSetDispatchQueue( (CFReadStreamRef) stream, NULL);
+            }
+
             [stream close];
             [self.streams removeObject:stream];
             if (self.streams.count) {
