@@ -137,6 +137,10 @@
    connectHandler:(MQTTConnectHandler)connectHandler {
     DDLogVerbose(@"MQTTSessionManager connectTo:%@", host);
     BOOL shouldReconnect = self.session != nil;
+    if (shouldReconnect) {
+        DDLogVerbose(@"[MQTTSessionManager] disconnecting old session");
+        [self disconnectWithDisconnectHandler:nil];
+    }
     if (!self.session ||
         ![host isEqualToString:self.host] ||
         port != self.port ||
@@ -201,7 +205,6 @@
     }
     if (shouldReconnect) {
         DDLogVerbose(@"[MQTTSessionManager] reconnecting");
-        [self disconnectWithDisconnectHandler:nil];
         [self reconnect:connectHandler];
     } else {
         DDLogVerbose(@"[MQTTSessionManager] connecting");
