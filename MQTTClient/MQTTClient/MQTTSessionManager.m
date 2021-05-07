@@ -368,7 +368,8 @@
 }
 
 - (void)connectToLast:(MQTTConnectHandler)connectHandler {
-    if (self.state == MQTTSessionManagerStateConnected) {
+    if (self.state == MQTTSessionManagerStateConnected
+        || self.state == MQTTSessionManagerStateConnecting) {
         return;
     }
     [self.reconnectTimer resetRetryInterval];
